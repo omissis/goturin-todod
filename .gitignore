@@ -1,0 +1,6 @@
+bin/
+configs/data/
+!configs/data/.gitkeep
+vendor/
+coverage.*
+.envrc

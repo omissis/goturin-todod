@@ -1,0 +1,3 @@
+gomigrate 4.17.0
+golang 1.22.0
+golangci-lint 1.55.2

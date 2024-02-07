@@ -1,0 +1,8 @@
+---
+remote: origin
+target-branch: main
+chart-dirs:
+  - helm_chart
+chart-repos:
+  - stable=https://github.com/omissis/gonew-template
+helm-extra-args: --timeout 600s

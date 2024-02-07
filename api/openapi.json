@@ -1,0 +1,236 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Todod API",
+    "description": "Api for the Todod project",
+    "version": "1.0",
+    "contact": {
+      "name": "Claudio Beatrice",
+      "url": "https://tenwarp.com",
+      "email": "claudi0.beatric3@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "security": [],
+  "servers": [
+    {
+      "url": "http://0.0.0.0:8080",
+      "description": "local"
+    },
+    {
+      "url": "https://api.todod.dev",
+      "description": "dev"
+    },
+    {
+      "url": "https://api.todod.cc",
+      "description": "staging"
+    },
+    {
+      "url": "https://api.todod.io",
+      "description": "prod"
+    }
+  ],
+  "tags": [
+    {
+      "name": "todo",
+      "description": "Todo"
+    },
+    {
+      "name": "release",
+      "description": "Release"
+    }
+  ],
+  "paths": {
+    "/todos": {
+      "get": {
+        "summary": "GetTodos",
+        "description": "List all todos",
+        "tags": [
+          "todo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Todo.Read"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "list-todos"
+      },
+      "post": {
+        "summary": "CreateTodo",
+        "description": "Create a new todo",
+        "tags": [
+          "todo"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        },
+        "operationId": "create-todo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Todo.Create"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/{uuid}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": "uuid",
+          "description": "Universal Unique Identifier of a Todo",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "GetTodo",
+        "description": "Get a todo",
+        "tags": [
+          "todo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo.Read"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "operationId": "get-todo"
+      },
+      "put": {
+        "summary": "UpdateTodo",
+        "description": "Update an existing todo",
+        "tags": [
+          "todo"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        },
+        "operationId": "update-todo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Todo.Update"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "DeleteTodo",
+        "description": "Delete an existing todo",
+        "tags": [
+          "todo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "operationId": "delete-todo"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Todo.Create": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "Todo.Read": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uuid",
+          "title",
+          "description"
+        ]
+      },
+      "Todo.Update": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description"
+        ]
+      },
+      "Uuid": {
+        "type": "string",
+        "pattern": "\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b",
+        "minLength": 36,
+        "maxLength": 36
+      }
+    }
+  }
+}
